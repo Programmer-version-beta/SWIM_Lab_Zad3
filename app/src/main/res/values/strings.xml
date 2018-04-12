@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SWIM_Lab_Zad3</string>
+    <string name="title_activity_info_about_movie">InfoAboutMovie</string>
+    <string name="age">Wiek: </string>
+</resources>
