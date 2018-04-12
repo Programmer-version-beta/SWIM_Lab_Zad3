@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     public static ArrayList <Movie> movies = new ArrayList <>();
+    RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +26,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycleView(){
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movies);
+        recyclerView = (RecyclerView) findViewById(R.id.movies);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(new MyAdapter(recyclerView, getApplicationContext()));
+        setUpItemTouchHelper();
     }
+
+    private void setUpItemTouchHelper() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                MyAdapter adapter = (MyAdapter)recyclerView.getAdapter();
+                adapter.remove(swipedPosition);
+            }
+
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
 
     private void initData(){
         ArrayList <Actor> list = new ArrayList<>();

@@ -49,17 +49,6 @@ public class MyAdapter extends RecyclerView.Adapter {
             }
         });
 
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                int positionToDelete = recyclerView.getChildAdapterPosition(v);
-                MainActivity.movies.remove(positionToDelete);
-                notifyItemRemoved(positionToDelete);
-                return false;
-            }
-        });
-
         return new MyViewHolder(view);
     }
 
@@ -73,5 +62,13 @@ public class MyAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return MainActivity.movies.size();
+    }
+
+    public void remove(int position) {
+        if (position < 0 || position >= MainActivity.movies.size()) {
+            return;
+        }
+        MainActivity.movies.remove(position);
+        notifyItemRemoved(position);
     }
 }
